@@ -22,16 +22,16 @@
 
 
 % ========== Language options ==========
-\usepackage[brazil,english]{babel}
+\usepackage[brazil]{babel}
 %\usepackage[english]{babel}
 
 
 % ========== ABNT (requer ABNTeX 2) ==========
 %	http://www.ctan.org/tex-archive/macros/latex/contrib/abntex2
-\usepackage[num]{abntex2cite}
+\usepackage[num,overcite]{abntex2cite}
 
 % Forçar o abntex2 a usar [ ] nas referências ao invés de ( )
-%\citebrackets{[}{]}
+\citebrackets{[}{]}
 
 
 % ========== Lorem ipsum ==========
@@ -48,11 +48,6 @@
 		Luiz G. Santos\\
 		Rafael L. D. R. Santos\\
 		Rafael R. Correia}
-
-% Para múltiplos autores (TCC)
-%\autor{Nome Sobrenome\\%
-%		Nome Sobrenome\\%
-%		Nome Sobrenome}
 
 % Orientador / Coorientador
 \orientador{Jorge Risco Becerra}
@@ -105,7 +100,7 @@
 % ========== Agradecimentos ==========
 \begin{agradecimentos}
 
-Valeu Risco
+Valeu Risco, é nois
 
 \end{agradecimentos}
 
@@ -127,15 +122,15 @@ Valeu Risco
 	
 	Foi neste contexto que surgiu a parceria entre a Poli e o Nubank para o desenvolvimento de um projeto que tentasse mitigar os problemas acima descritos.
 	
-	O Nubank é uma fintech brasileira que conta com mais de 200 engenheiros, trabalhando diariamente em mais de 200 micro serviços para atender os mais de 5 milhões de clientes ativos em seus diversos produtos. A empresa é referência nacional e mundial em tecnologia, devido a sua arquitetura de software moderna, baseada em micro serviços. Porém, as implicações negativas deste modelo já estão se manifestando na empresa há algum tempo, prejudicando a produtividade das equipes.
+%%	O Nubank é uma fintech brasileira que conta com mais de 200 engenheiros, trabalhando diariamente em mais de 200 micro serviços para atender os mais de 5 milhões de clientes ativos em seus diversos produtos. A empresa é referência nacional e mundial em tecnologia, devido a sua arquitetura de software moderna, baseada em microsserviços. Porém, as implicações negativas deste modelo já estão se manifestando na empresa há algum tempo, prejudicando a produtividade das equipes.
 	
 	O projeto foi co-orientado por um dos engenheiros mais prestigiados do Nubank, que está presente na empresa desde praticamente o seu nascimento, sendo responsável por importantes decisões arquiteturais e por ter participado da construção da fundação de toda a tecnologia da empresa.
 	
 	Através do intenso uso de computação em nuvem, orquestração de Containers Docker, conceitos de Distributed Tracing e técnicas para sincronização de file systems, este projeto visa aumentar a produtividade dos engenheiros do Nubank em suas tarefas de desenvolvimento e manutenção dos micro serviços da empresa.
 	
-	Para o desenho da solução, foi feito um estudo profundo sobre modelos de PaaS, características de micro serviços de modo geral, bem como seu uso no contexto específico do Nubank. 
+	Para o desenho da solução, foi feito um estudo profundo sobre modelos de PaaS, características de microsserviços de modo geral, bem como seu uso no contexto específico do Nubank. 
 	
-	O resultado foi a construção de um ambiente de desenvolvimento para arquiteturas de larga escala baseada em micro serviços, chamado de Formicarium. O projeto foi implantado em um squad do Nubank nos últimos meses de desenvolvimento do trabalho para que feedbacks pudessem ser colhidos e para que fossem feitos os ajustes necessários.
+	O resultado foi a construção de um ambiente de desenvolvimento para arquiteturas de larga escala baseada em microsserviços, chamado de Formicarium. O projeto foi implantado em um squad do Nubank nos últimos meses de desenvolvimento do trabalho para que feedbacks pudessem ser colhidos e para que fossem feitos os ajustes necessários.
 	
 	Com base nos resultados, pode-se concluir que o projeto conseguiu atender os requisitos propostos e mitigar os diversos problemas apresentados. A sua implantação foi bem recebida pelo squad escolhido e sua difusão não é uma tarefa complicada, dado sua fácil utilização e vantagens imediatas. Inclusive, ao longo do projeto foi tomado o cuidado de se extrair os componentes altamente acoplados com características específicas do Nubank, de modo que a implantação da solução até mesmo em outras empresas fosse possível sem muitas modificações.
 	
@@ -178,13 +173,24 @@ Abstract...
 	
 \chapter{Introdução}
 	\section{Objetivo}
+	%% O que o seu projeto resolve?
 	\section{Motivação}
+	%% Por que fazer um trabalho?
 	A motivação desse projeto vem de alguns fatores. O primeiro é o interesse e a familiaridade do grupo quanto ao desenvolvimento de microsserviços provenientes da experiência adquirida nos estágios na Nubank, e o reconhecimento dos benefícios e dificuldades essa arquitetura. Outro fator importante é a constatação de que, com o crescimento das aplicações em nuvem computacional, a necessidade e urgência de uma arquitetura distribuída aumenta, e a carência de ferramentas para conter suas dificuldades se torna um problema cada vez mais importante.
 	
 	Com isso, foi possível a identificação de um problema relativamente complexo de Engenharia de Software que ainda não teve a devida atenção no mercado, e uma oportunidade para aplicação e aprofundamento do nosso conhecimento de processo de desenvolvimento de software. Nós queríamos, então, criar uma proposta de solução para um problema real ainda em discussão.
 	\section{Justificativa}
+	%% Por que fazer esse trabalho? 
+	%% 1. O tema é necessário (debugging microservices)
+	O crescimento da arquitetura de microsserviços é notório e pode ser percebido de várias formas. Tanto no mercado quanto na academia, a discussão só tem crescido, com cada vez mais empresas grandes decidindo adotar essa tecnologia, tais como Uber e Netflix. É possível notar também um crescente número de livros que tratam sobre o assunto, como \textit{Production-Ready Microservices} da Susan J. Fowler\cite{productionreadyms} e \textit{Microservices Patterns} de Chris Richardson\cite{mspatterns}. Esse crescimento permitiu a escalabilidade dessas empresas, mas também veio com um custo: a crescente complexidade.
 	
+	É nesse contexto que o Nubank se encontra e faz parceria neste trabalho. O Nubank é uma fintech brasileira que conta com cerca de 200 engenheiros, trabalhando diariamente em mais de 200 microsserviços para atender os mais de 5 milhões de clientes ativos em seus diversos produtos. A empresa é referência nacional e mundial em tecnologia, devido a sua arquitetura de software moderna, baseada em microsserviços. Porém, as implicações negativas deste modelo já estão se manifestando na empresa há algum tempo, prejudicando a produtividade das equipes. Assim, tivemos a oportunidade de firmar essa parceria e trabalharmos em um contexto real, para resolver uma carência crescente na empresa.
+	
+	No entanto, este trabalho foi feito de tal forma que, com algum esforço de implantação, as ferramentas desenvolvidas possam ser usufruídas por outras empresas que tenham características de arquitetura semelhantes. Um estudo feito na Universidade de Brighton, no Reino Unido, indica que dentre 33 publicações referentes à arquitetura de microsserviços, o desafio mais citado é referente a comunicação e integração dos microsserviços.\cite{systematicmapping}
+	%% 4. Há evidência de que outros contextos podem se beneficiar desse projeto.
+	%%\cite{fowlermicroservices}
 	\section{Organização do Trabalho}
+	%% Como ler esse texto?
 	
 \chapter{Aspectos Conceituais}
 	\section{Docker}
@@ -242,21 +248,153 @@ Abstract...
 	\section{Kubernetes}
 	Kubernetes é um projeto de código aberto da Google, que possui mais de 1800 contribuintes e ganha cada vez mais atenção no mundo de operação e desenvolvimento de software. 
 	O Google, dado a escala de sua operação, sofria com problemas com o gerenciamento de muitas máquinas virtuais. 
-	Assim, o Google precisou repensar como lidar com esse problema, o que, depois de anos, levou ao gerenciador e escalonador de contêiners chamado Kubernetes.
+	Assim, o Google precisou repensar como lidar com esse problema, o que, depois de anos, levou ao gerenciador e escalonador de contêineres chamado Kubernetes.
 
-	Para entender melhor a necessidade de um gerenciador tal como o Kubernetes, é necessário dar um passo atrás e olhar para as vantagens e desvantagens dos contêiners.
+	Para entender melhor a necessidade de um gerenciador tal como o Kubernetes, é necessário dar um passo atrás e olhar para as vantagens e desvantagens dos contêineres.
 	Contêiners são feitos para serem leves, rápidos, mas de duração curta e frágeis.
-	Assim, eles trocaram a resiliência de uma máquina virtual pela velocidade e leveza. Isso requer que contêiners rodem em um ambiente onde em caso de falha ou mudança de carga, esse ambiente garanta a substituição desses contêiners e gerencie eventuais mudanças de rede e recursos de memória do cluster.
+	Assim, eles trocaram a resiliência de uma máquina virtual pela velocidade e leveza. Isso requer que contêineres rodem em um ambiente onde em caso de falha ou mudança de carga, esse ambiente garanta a substituição desses contêineres e gerencie eventuais mudanças de rede e recursos de memória do cluster.
+	
+	\section{Programação Funcional}
+	
+	Como o próprio nome diz, a programação funcional surge de funções matemáticas, mais especificamente do cálculo lambda. Programação funcional é um paradigma de programação assim como Orientado a Objeto ou Imperativo. As características mais marcantes desse paradigma são a presença de imutabilidade de dados e estados, funções serem tratadas como valores como quaisquer outros tipos (inteiros, strings, etc...), transparência referencial e separação de efeitos colaterais.
+	As linguagens de programação podem ser puramente funcionais, ou parcialmente, isso é, contém elementos desse paradigma porém não se limitam a ele, ou fazem pequenos desvios em prol da usabilidade.
+	
+	\section{Microsserviços}
+	
+	\section{HTTP}
+	
+	\section{GraphQL}
+	
+	\section{Arquitetura Hexagonal}
+	
+	Também conhecida com Arquitetura de \textit{Ports and Adapters} é um modelo de arquitetura de software em camadas que presa pela separação entre domínio e lógica da aplicação com comunicação e interação com o mundo exterior. Esse modelo possui as seguintes camadas:
+	
+	\begin{itemize}
+	    \item Port
+	    \item Adapter
+	    \item Controller/Application
+	    \item Domain/Logic
+	\end{itemize}
+	
+	\begin{figure}[htbp]
+	    \centering
+	    \includegraphics[scale=0.6]{hexagonal1.png}
+	    \caption{Diagrama de Arquitetura Hexagonal}
+	    \label{fig:hexagonal1}
+	    \legend{Fonte: https://lmonkiewicz.com/wp-content/uploads/2017/04/hexagonal-e1491766585240.png}
+	\end{figure}
+
+	A grande possibilidade desse modelo é que ele permite que se tenham diversas portas e adaptadores diferentes para um mesmo domínio/lógica da aplicação, como o diagrama abaixo mostra.
+	
+	Essa arquitetura é muito interessante para microsserviços pois permite criar um desacoplamento de forma natural e da grandes possibilidades de meios de comunicação e interação dos serviços entre si.
+	
+	\section{Git}
+	
+	Git é um sistema de controle de versões distribuído amplamente utilizado em desenvolvimento de software. o Git se organiza através de repositórios que podem ser clonados e editados localmente pelo usuário e então sincronizados com um servidor remoto, publicando as alterações. Todo o histórico de alterações é mantido nesse processo sem perda de informações.
+	Alguns conceitos importantes de serem destacados no funcionamento do Git para o melhor entendimento desse projeto são os seguintes:
+	
+	\textbf{Repositório}
+	\newline
+	Corresponde a um diretório de arquivos gerenciado pelo Git.
+	
+	\textbf{Commit}
+	\newline
+	É uma consolidação de um conjunto de alterações realizado no repositório Git. Representa um ponteiro para um estado específico (uma versão).
+	
+	\textbf{Branch}
+	\newline
+	Branch é um ponteiro movél que aponta para um determinado commit. Branches criam a ideia de uma árvore de caminhos em um repositório apontam sempre para o commit mais recente de uma bifurcação de mudanças.
+	
+	\textbf{HEAD}
+	\newline
+	HEAD é um ponteiro que aponta para para o branch ou commit atual que está em uso no repositório local.
+	
+	\textbf{FETCH\_HEAD}
+	\newline
+	Um ponteiro efêmero que aponta para a última referência buscada por um fetch.
+	
+	\textbf{Staging}
+	\newline
+	Área do Git onde as alterações que vão entrar no próximo commit ficam
+	
+	\begin{figure}[!htbp]
+		\caption{\label{fig_git1}Anatomia do Git}
+		\begin{center}
+		\includegraphics[scale=0.4]{git.png}
+		\end{center}
+		% \legend{Fonte: os autores} ABNT HELP
+		% \caption{Fonte: https://raw.githubusercontent.com/UnbDroid/AprendendoGithub/master/images/git.png}
+	\end{figure}
+	
+	Para realizar a sincronização entre repositórios locais e remotos o Git possibilita o uso de diversos protocolos de rede, temos entre eles principalmente: HTTP(S), FTP, rsync ou SSH.
+	
+	Durante o processo de uso do Git algumas ações são frequentemente utilizadas, e valem ser destacadas aqui, essas são:
+	
+	\textbf{git init}
+	\newline
+	Inicia um repositório git vazio no diretório.
+	
+	\textbf{git clone}
+	\newline
+	Cria um cópia de um repositório remoto localmente, acaba por fazer um download da estrutura remota para a maquina do usuário.
+	
+	\textbf{git fetch}
+	\newline
+	Sincroniza o estado do repositório remoto com o local sem realizar alterações na working tree do desenvolvedor. Baixa os dados existentes no repositório remote que não existem no computador do usuário.
+	
+	\textbf{git checkout}
+	\newline
+	Alinha o repositório local de acordo com a revisão ou branch especificado no comando.
+	
+	\textbf{git commit}
+	\newline
+	O commit é o ato de criar um ponto no histórico do repositório contendo as mudanças que foram adicionas na área de staging.
+	
+	\textbf{git add}
+	\newline
+	O comando \textit{add} é responsável por adicionar as mudanças especificadas na área de staging do git para serem comitadas em seguida.
+	
+	\textbf{git push}
+	\newline
+	O push executa a ação de enviar os commits locais para o repositório remoto especificado.
+	
+	\textbf{git merge}
+	\newline
+	Atualiza os arquivos na working tree para corresponderem ao especificado no comando. O merge também pode acabar atualizando o HEAD do branch atual.
+	
+	\textbf{git pull}
+	\newline
+	Esse comando realiza a atualização do repositório local a partir das mudanças realizadas no repositório remoto. De forma geral ele acaba realizando um download dos commits mais recentes que estão presentes no remote. É uma combinação do git fetch com o git merge FETCH\_HEAD
+	
+	\begin{figure}[htb]
+		\caption{\label{fig_git2}Fluxo de trabalho em Git}
+		\begin{center}
+		\includegraphics[scale=1]{GIT2.png}
+		\end{center}
+		% \legend{Fonte: os autores} ABNT HELP
+		% \caption{Fonte: https://kevintshoemaker.github.io/StatsChats/GIT2.png}
+	\end{figure}
+
+	
+	\section{Distributed Tracing}
+	
  
 \chapter{Tecnologias Utilizadas}
+	\section{Clojure}
+	\section{Javascript}
+	\subsection{NodeJS}
+	\subsection{React}
+	\subsection{Electron}
+	\section{ZeroMQ}
+	\section{Docker}
+	\section{Kubernetes}
 	
 
 \chapter{Metodologia do Trabalho}
-	
 
 \chapter{Especificação de Requisitos do Sistema}
+	a
 	
-
 \chapter{Projeto e Implementação}
 	\section{FileSync}
 
@@ -278,7 +416,7 @@ Abstract...
 	Para evitar a geração de uma nova imagem Docker a cada iteração no código fonte, foi desenvolvida uma imagem genérica capaz de compilar e executar qualquer serviço da Nubank em modo de desenvolvimento. Esta imagem foi apelidada de Chamber e uma de suas características é a sua extensibilidade, permitindo que em melhorias futuras sejam desenvolvidas versões para outras linguagens e plataformas (Como por exemplo NodeJS, Ruby, Scala, etc.). Para implantação no Nubank, foi desenvolvida a imagem Chamber-lein, capaz de executar programas escritos em Clojure, principal linguagem utilizada nos micro serviços do Nubank.
 	\section{Arquitetura da solução}
 		\begin{figure}[htb]
-			\caption{\label{fig_arquitetura}Arquitetura da solução}
+			\caption{\label{fig_arquitetura1}Arquitetura da solução}
 			\begin{center}
 			\includegraphics[scale=0.50]{arquitetura-da-solucao.png}
 			\end{center}
@@ -310,7 +448,7 @@ Abstract...
 	
 	Esta parte do processo pode ser representada pelo seguinte diagrama de sequência:
 		\begin{figure}[htb]
-			\caption{\label{fig_arquitetura}Fluxo do Tanajura}
+			\caption{\label{fig_arquitetura2}Fluxo do Tanajura}
 			\begin{center}
 			\includegraphics[scale=0.20]{tanajura-flow.png}
 			\end{center}
@@ -323,10 +461,10 @@ Abstract...
 	Quando o desenvolvedor deseja implantar em seu devspace um serviço com capacidades de sincronização, ele digita o seguinte o comando:
 
 	\begin{verbatim}
-	fmc service:deploy:local my-service -f ./config-file.json /path/to/service
+	fmc service:deploy:local my-service -f ./config.json /path/to/service
 	\end{verbatim}
 
-	Este comando irá realizar a implantação de um serviço chamado 'my-service', utilizando o arquivo de configuração './config-file.json' a partir da pasta local '/path/to/service'
+	Este comando irá realizar a implantação de um serviço chamado 'my-service', utilizando o arquivo de configuração './config.json' a partir da pasta local '/path/to/service'
 
 	\section{Gerenciador de processo (Stinger)}	
 	
@@ -366,7 +504,7 @@ Abstract...
 	START\_AFTER\_PULL
 	
 	Caso esta variável esteja setada, o Stinger irá reinicializar o processo sempre após o recebimento de novo código através do pull. Esta configuração existe porque em certas linguagens de programação (como a utilizada pela Nubank) não é necessário recompilar e nem executar nenhum comando para que o novo código obtido seja aplicado no processo em execução.
-
+    
 	De maneira geral, o Stinger é um gerenciador de processos integrado com o Git e que expõe suas funcionalidades através de um servidor HTTP.
 
 \chapter{Testes e Avaliação}
@@ -374,6 +512,7 @@ Abstract...
 	\section{Conclusões do Projeto de Formatura}
 	\section{Contribuições}
 	\section{Perspectivas de Continuidade}
+	
 
 %\capepigrafe[0.5\textwidth]{``Frase espirituosa de um autor famoso''}{Autor famoso}
 
@@ -391,9 +530,9 @@ Abstract...
 
 % --- ABNT (requer ABNTeX 2) ---
 %	http://www.ctan.org/tex-archive/macros/latex/contrib/abntex2
-%\bibliographystyle{abntex2-num}
+\bibliographystyle{abntex2-num}
 
-%\bibliography{}
+\bibliography{referencias}
 
 
 % ========== Apêndices (opcional) ==========
