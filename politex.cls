@@ -27,7 +27,6 @@
 \ProvidesClass{politex}%
 	[2013/12/29 POLI-USP LaTeX Class]
 
-
 %%%%%%  REQUIRED PACKAGES  %%%%%%
 %% inputenc - for accented letters
 \RequirePackage[utf8]{inputenc}

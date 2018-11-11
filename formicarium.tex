@@ -20,12 +20,10 @@
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{graphicx,cite,enumerate}
 
-
-% ========== Language options ==========
 \usepackage[brazil]{babel}
 %\usepackage[english]{babel}
-
-
+%\usepackage{caption}
+%\usepackage{subcaption}
 % ========== ABNT (requer ABNTeX 2) ==========
 %	http://www.ctan.org/tex-archive/macros/latex/contrib/abntex2
 \usepackage[num,overcite]{abntex2cite}
@@ -33,11 +31,11 @@
 % Forçar o abntex2 a usar [ ] nas referências ao invés de ( )
 \citebrackets{[}{]}
 
-
 % ========== Lorem ipsum ==========
 \usepackage{blindtext}
 
-
+\newcommand{\legend}[1]{\begin{center}\def\caption{}\caption{#1}\end{center}}
+% \newcommand{\legend}[1]{\begin{center}\def\caption{}\makebox[\textwidth][s]{\caption{#1}} \par\end{center}}
 
 % ========== Opções do documento ==========
 % Título
@@ -54,7 +52,7 @@
 \coorientador{Rafael de França Ferreira}
 
 % Tipo de documento
-\tcc{Engenharia de Computação}
+\tcc{de Computação}
 %\dissertacao{Engenharia Elétrica}
 %\teseDOC{Engenharia Elétrica}
 %\teseLD
@@ -116,17 +114,17 @@ Valeu Risco, é nois
 
 % ========== Resumo ==========
 \begin{resumo}
-	Em uma arquitetura distribuída de microsserviços, é comum enfrentar problemas relacionados à produtividade enquanto o software é desenvolvido. Uma das causas deste problema é a necessidade de se executar diversos micro serviços ao mesmo tempo para iterar, testar e validar algum fluxo de negócio. Estes processos computacionais demandam uma quantidade de recursos (processamento e memória) que nem sempre estão disponíveis na máquina do desenvolvedor.
+	Em uma arquitetura distribuída de microsserviços, é comum enfrentar problemas relacionados à produtividade enquanto o software é desenvolvido. Uma das causas deste problema é a necessidade de se executar diversos microsserviços ao mesmo tempo para iterar, testar e validar algum fluxo de negócio. Estes processos computacionais demandam uma quantidade de recursos (processamento e memória) que nem sempre estão disponíveis na máquina do desenvolvedor.
 	
-	Um outro problema comum é a dificuldade de se entender e depurar fluxos complexos de negócio que envolvam comunicação entre diversos micro serviços através de diferentes protocolos de troca de mensagens.
+	Um outro problema comum é a dificuldade de se entender e depurar fluxos complexos de negócio que envolvam comunicação entre diversos microsserviços através de diferentes protocolos de troca de mensagens.
 	
 	Foi neste contexto que surgiu a parceria entre a Poli e o Nubank para o desenvolvimento de um projeto que tentasse mitigar os problemas acima descritos.
 	
-%%	O Nubank é uma fintech brasileira que conta com mais de 200 engenheiros, trabalhando diariamente em mais de 200 micro serviços para atender os mais de 5 milhões de clientes ativos em seus diversos produtos. A empresa é referência nacional e mundial em tecnologia, devido a sua arquitetura de software moderna, baseada em microsserviços. Porém, as implicações negativas deste modelo já estão se manifestando na empresa há algum tempo, prejudicando a produtividade das equipes.
+%%	O Nubank é uma fintech brasileira que conta com mais de 200 engenheiros, trabalhando diariamente em mais de 200 microsserviços para atender os mais de 5 milhões de clientes ativos em seus diversos produtos. A empresa é referência nacional e mundial em tecnologia, devido a sua arquitetura de software moderna, baseada em microsserviços. Porém, as implicações negativas deste modelo já estão se manifestando na empresa há algum tempo, prejudicando a produtividade das equipes.
 	
 	O projeto foi co-orientado por um dos engenheiros mais prestigiados do Nubank, que está presente na empresa desde praticamente o seu nascimento, sendo responsável por importantes decisões arquiteturais e por ter participado da construção da fundação de toda a tecnologia da empresa.
 	
-	Através do intenso uso de computação em nuvem, orquestração de Containers Docker, conceitos de Distributed Tracing e técnicas para sincronização de file systems, este projeto visa aumentar a produtividade dos engenheiros do Nubank em suas tarefas de desenvolvimento e manutenção dos micro serviços da empresa.
+	Através do intenso uso de computação em nuvem, orquestração de Containers Docker, conceitos de Distributed Tracing e técnicas para sincronização de file systems, este projeto visa aumentar a produtividade dos engenheiros do Nubank em suas tarefas de desenvolvimento e manutenção dos microsserviços da empresa.
 	
 	Para o desenho da solução, foi feito um estudo profundo sobre modelos de PaaS, características de microsserviços de modo geral, bem como seu uso no contexto específico do Nubank. 
 	
@@ -233,11 +231,10 @@ Abstract...
 	\begin{figure}[htb]
 		\caption{\label{fig_circulo}Diferenças entre VMs e Contêiners}
 		\begin{center}
-		\includegraphics[scale=0.20]{vms.png}
-		\includegraphics[scale=0.20]{containers.png}
+    		\includegraphics[scale=0.20]{vms.png}
+    		\includegraphics[scale=0.20]{containers.png}
 		\end{center}
-		% \legend{Fonte: os autores} ABNT HELP
-		% \caption{Fonte: https://www.backblaze.com/blog/vm-vs-containers/}
+		\legend{Fonte: https://www.backblaze.com/blog/vm-vs-containers/}
 	\end{figure}
 	
 	Ambos têm vantagens e desvantagens, e a decisão entre um outro varia dependendo dos casos de uso específicos, mas pode-se utilizar as seguintes regras como um ponto de partida:
@@ -277,10 +274,11 @@ Abstract...
 	    \item Domain/Logic
 	\end{itemize}
 	
-	\begin{figure}[htbp]
-	    \centering
-	    \includegraphics[scale=0.6]{hexagonal1.png}
+	\begin{figure}[htb]
 	    \caption{Diagrama de Arquitetura Hexagonal}
+	    \begin{center}
+	        \includegraphics[scale=0.6]{hexagonal1.png}
+	    \end{center}
 	    \label{fig:hexagonal1}
 	    \legend{Fonte: https://lmonkiewicz.com/wp-content/uploads/2017/04/hexagonal-e1491766585240.png}
 	\end{figure}
@@ -323,8 +321,7 @@ Abstract...
 		\begin{center}
 		\includegraphics[scale=0.4]{git.png}
 		\end{center}
-		% \legend{Fonte: os autores} ABNT HELP
-		% \caption{Fonte: https://raw.githubusercontent.com/UnbDroid/AprendendoGithub/master/images/git.png}
+		\legend{Fonte: https://raw.githubusercontent.com/UnbDroid/AprendendoGithub/master/images/git.png}
 	\end{figure}
 	
 	Para realizar a sincronização entre repositórios locais e remotos o Git possibilita o uso de diversos protocolos de rede, temos entre eles principalmente: HTTP(S), FTP, rsync ou SSH.
@@ -372,8 +369,7 @@ Abstract...
 		\begin{center}
 		\includegraphics[scale=1]{GIT2.png}
 		\end{center}
-		% \legend{Fonte: os autores} ABNT HELP
-		% \caption{Fonte: https://kevintshoemaker.github.io/StatsChats/GIT2.png}
+		\legend{Fonte: https://kevintshoemaker.github.io/StatsChats/GIT2.png}
 	\end{figure}
 
 	
@@ -400,9 +396,9 @@ Abstract...
 \chapter{Projeto e Implementação}
 	\section{FileSync}
 
-	Um dos grandes desafios do projeto foi a construção de um sistema para sincronização de arquivos em uma arquitetura distribuída de micro serviços.
+	Um dos grandes desafios do projeto foi a construção de um sistema para sincronização de arquivos em uma arquitetura distribuída de microsserviços.
 	
-	O caso de uso principal para esta funcionalidade é permitir que o engenheiro da Nubank pudesse iterar de maneira mais rápida no desenvolvimento de um novo micro serviço ou em modificações de algum existente.
+	O caso de uso principal para esta funcionalidade é permitir que o engenheiro da Nubank pudesse iterar de maneira mais rápida no desenvolvimento de um novo microsserviço ou em modificações de algum existente.
 	
 	Do ponto de vista da empresa, esta era um dos requisitos mais desejados e que mais agregaria valor ao produto final, dado que é uma ferramenta extremamente poderosa para o engenheiro, garantindo-lhe mais produtividade e liberdade enquanto estivesse desenvolvendo.
 	
@@ -415,7 +411,7 @@ Abstract...
 	
 	Os serviços em que o engenheiro está trabalhando não estão sendo compilados e executados na mesma máquina em que está o código fonte. Na verdade eles estão sendo executados em um contêiner Docker, gerenciado por um \textit{cluster} Kubernetes, operando em uma infraestrutura de \textit{hardware} fornecida pela AWS EC2. Para que mudanças no código fonte fossem de fato percebidas pelo desenvolvedor, este precisaria compilar uma nova imagem Docker com o código fonte atualizado, publica-lá em um repositório de contêineres e realizar a implantação desta nova imagem no \textit{cluster} remoto. Este processo, em um contexto de desenvolvimento, é extremamente ineficiente, o que tornaria a ferramenta pouco dinâmica e não atrativa para o engenheiro.
 
-	Para evitar a geração de uma nova imagem Docker a cada iteração no código fonte, foi desenvolvida uma imagem genérica capaz de compilar e executar qualquer serviço da Nubank em modo de desenvolvimento. Esta imagem foi apelidada de Chamber e uma de suas características é a sua extensibilidade, permitindo que em melhorias futuras sejam desenvolvidas versões para outras linguagens e plataformas (Como por exemplo \textit{NodeJS}, \textit{Ruby}, \textit{Scala}, \textit{etc.}). Para implantação no Nubank, foi desenvolvida a imagem Chamber-lein, capaz de executar programas escritos em \textit{Clojure}, principal linguagem utilizada nos micro serviços do Nubank.
+	Para evitar a geração de uma nova imagem Docker a cada iteração no código fonte, foi desenvolvida uma imagem genérica capaz de compilar e executar qualquer serviço da Nubank em modo de desenvolvimento. Esta imagem foi apelidada de Chamber e uma de suas características é a sua extensibilidade, permitindo que em melhorias futuras sejam desenvolvidas versões para outras linguagens e plataformas (Como por exemplo \textit{NodeJS}, \textit{Ruby}, \textit{Scala}, \textit{etc.}). Para implantação no Nubank, foi desenvolvida a imagem Chamber-lein, capaz de executar programas escritos em \textit{Clojure}, principal linguagem utilizada nos microsserviços do Nubank.
 	
 	Além disto, esta imagem tem um componente de software capaz de atualizar o código do serviço que está sendo executado dentro do contêiner através do Git.
 	
@@ -425,8 +421,7 @@ Abstract...
 % 			\begin{center}
 % 			\includegraphics[scale=0.50]{arquitetura-da-solucao.png}
 % 			\end{center}
-% 			% \legend{Fonte: os autores} ABNT HELP
-% 			% \caption{Fonte: própria}
+% 			\legend{Fonte: os autores}
 % 		\end{figure}
 	
 	\subsection{Servidor web para Git (Tanajura)}
@@ -458,7 +453,7 @@ Abstract...
 			\begin{center}
 			\includegraphics[scale=0.20]{tanajura-flow.png}
 			\end{center}
-			% \legend{Fonte: os autores} ABNT HELP
+			\legend{Fonte: os autores}
 			% \caption{Fonte: própria}
 		\end{figure}
 
