@@ -1,4 +1,4 @@
-\documentclass[]{politex}
+\documentclass[twosideprint]{politex}
 % ========== Opções ==========
 % pnumromarab - Numeração de páginas usando algarismos romanos na parte pré-textual e arábicos na parte textual
 % abnttoc - Forçar paginação no sumário conforme ABNT (inclui "p." na frente das páginas)
@@ -33,6 +33,8 @@
 
 % ========== Lorem ipsum ==========
 \usepackage{blindtext}
+
+\usepackage{array}
 
 \newcommand{\legend}[1]{\begin{center}\def\caption{}\caption{#1}\end{center}}
 % \newcommand{\legend}[1]{\begin{center}\def\caption{}\makebox[\textwidth][s]{\caption{#1}} \par\end{center}}
@@ -191,6 +193,66 @@ Abstract...
 	%% Como ler esse texto?
 	
 \chapter{Aspectos Conceituais}
+	\section{Cloud Computing}
+	Computação em Nuvem (do Inglês \textit{Cloud Computing}) é segundo a NIST \footnote{National Institute of Standards and Technology, https://www.nist.gov/} um modelo para prover um acesso de rede a um grupo compartilhado (\textit{shared pool}) de recursos computacionais (recursos como capacidade de rede, servidores, armazenamento, aplicações e serviços) de forma ubíqua, prática e sob demanda.
+
+Tal acesso deve ser rapidamente provisionado e lançado com o mínimo de gerenciamento e interação com o provedor de serviços por parte da aplicação.
+
+O modelo de computação em nuvem deve possuir algumas características básicas, que estão descritas na seção seguinte.
+
+\subsection{Características básicas de Cloud Computing}
+
+A NIST define 5 características essenciais do modelo de Cloud Computing:
+\begin{itemize}
+	\item Serviço sob demanda: Um consumidor pode provisionar unilateralmente capacidades computacionais, como tempo de servidor e armazenamento de rede, conforme for necessário, sem qualquer interação humana com o provedor de serviço;
+	\item Agrupamento de recursos: Os recursos de computação do provedor são agrupados para atender a vários consumidores usando um modelo "multi inquilino", com diferentes recursos físicos e virtuais dinamicamente atribuídos e reatribuídos de acordo com a demanda do consumidor. Existe uma sensação de independência de localização pois o cliente geralmente não tem controle ou conhecimento sobre a localização exata dos recursos fornecidos, mas pode ser capaz de especificar a localização em um nível de abstração (por exemplo, país, estado ou datacenter). Exemplos de recursos incluem armazenamento, processamento, memória e largura de banda de rede.
+	\item Amplo acesso à rede: Os recursos estão disponíveis na rede e são acessados por meio de mecanismos que promovam o uso por plataformas heterogêneas por clientes em diversos dispositivos (por exemplo, telefones celulares, tablets, laptops e estações de trabalho). Esta característica promove o conceito de computação ubíqua, isto é, em toda parte, onipresente.
+	\item Elasticidade rápida: Os recursos podem ser provisionados e liberados elasticamente, em alguns casos automaticamente, proporcionando uma escalabilidade crescente ou descrescente conforme a demanda. Os recursos disponíveis normalmente aparentam ser ilimitados para o consumidor, podendo ser requisitidados em qualquer quantidade e a qualquer momento.
+	\item Serviço mensurável: Os sistemas em nuvem controlam e otimizam automaticamente o uso de recursos, aproveitando-se de uma capacidade de medição em um nível de abstração apropriado ao tipo de serviço (por exemplo, armazenamento, processamento, largura de banda e contas de usuário ativas). O uso de recursos pode ser monitorado, controlado e reportado, gerando transparência tanto para o fornecedor e consumidor do serviço utilizado.
+\end{itemize}
+
+\subsection{Modelos para Cloud Computing}
+
+Este capítulo introduz brevemente os modelos de serviço de cloud computing que podem ser adotados por um provedor e os modelos de \textit{deployment}, nas secções seguintes.
+
+\subsection{Modelos de serviços}
+
+A teoria por trás dos serviços de computação em nuvem abrange três elementos principais: software, plataforma e infraestrutura. Temos os seguintes modelos de serviço:
+
+\begin{itemize}
+  \item \textbf{SaaS, Software as a Service} ("Software como um serviço") 
+
+  Neste modelo é oferecido ao consumidor o uso de aplicações de um provedor que rodam sobre uma infraestrutura em nuvem. Estas aplicações são acessíveis a partir de vários dispositivos clientes por meio de uma interface simples, como um navegador da web, ou uma interface de por meio de um programa (mobile ou desktop). 
+
+  O consumidor não gerencia ou controla a infraestrutura de nuvem por trás da aplicação, incluindo rede, servidores, sistemas operacionais, armazenamento ou capacidade da aplicação individual. São disponibilizadas apenas configurações do aplicativo específicas para aquele usuário individual.
+
+  Alguns exemplos de SaaS são serviços de \textit{webmail}, \textit{streaming} de vídeos, conversão de arquivos e trabalho colaborativo com arquivos. Este modelo não será mais detalhado neste trabalho.
+
+  \item \textbf{PaaS, Platform as a Service} ("Plataforma como um serviço") 
+
+  A capacidade fornecida ao consumidor é de implantar na nuvem aplicações criadas por meio de linguagens de programação, bibliotecas, serviços e ferramentas suportadas pelo provedor. Tais aplicações podem ser criadas pelo próprio consumidor, ou consumidas por este.
+
+  Assim como no modelo de SaaS, o consumidor geralmente não gerencia ou têm controle sobre a infraestrutura de nuvem por trás, incluindo rede, servidores, sistemas operacionais, ou armazenamento. Porém o consumidor as tem controle sobre os aplicativos implantados e possivelmente sobre definições de configuração para o ambiente de hospedagem do aplicativo.
+
+  Como exemplos de provedores no mercado temos \textit{IBM Bluemix}, \textit{Heroku}, e \textit{Windows Azure Cloud}.
+
+  \item \textbf{IaaS, Infrastructure as a Service} ("Infraestrutura como um serviço") 
+
+  A capacidade oferecida ao consumidor é provisionar processamento, armazenamento, redes e outros recursos fundamentais de computação onde o consumidor é capaz de implantar e executar software arbitrário, incluindo-se sistemas e aplicações. O consumidor não gerencia nem controla a infraestrutura de nuvem por trás, mas tem controle sobre sistemas operacionais, armazenamento e aplicativos implantados. Possivelmente possui também um controle limitado de componentes de rede (por exemplo, firewalls de host). Geralmente acompanha serviços de máquinas virtualizadas.
+
+  Alguns exemplos de provedores no mercado são \textit{Amazon Web Services}, \textit{Microsoft Azure}, \textit{Google Cloud} e \textit{VMware Cloud on AWS}. 
+\end{itemize}
+
+\subsection{Modelos de implantação}
+Os modelos de implantação (\textit{deployment models}) a seguir delimitam as formas possíveis de tarifação dos serviços, as possíveis localizações da infraestrutura física e o público de escopo. São eles:
+
+\begin{itemize}
+  \item \textbf{Nuvem privada}: A infraestrutura de nuvem é disponibilizada para uso exclusivo por uma única organização, compreendendo vários consumidores (\textit{business units}). Pode ser propriedade e gerenciada pela própria organização, um terceiro ou alguma combinação de ambos, e pode existir dentro ou fora das instalações da organização.
+  \item \textbf{Nuvem comunitária}: A infraestrutura em nuvem é de uso exclusivo por uma comunidade de consumidores de organizações que compartilham mesmos interesses (por exemplo, missão, requisitos de segurança, políticas e considerações de conformidade). Pode ser de propriedade e administrada por uma ou mais organizações da comunidade, um terceiro, ou alguma combinação de ambos, e pode existir dentro ou fora das instalações.
+  \item \textbf{Nuvem pública}: A infraestrutura de nuvem é para o uso aberto pelo público em geral. Pode ser propriedade ou gerenciada por uma organização comercial, acadêmica ou governamental, ou alguma combinação destes. Existe dentro das instalações do provedor de nuvem.
+  \item \textbf{Nuvem híbrida}: A infraestrutura de nuvem é uma composição de duas ou mais infraestruturas de nuvens distintas (privadas, comunitárias ou públicas) que permanecem como entidades únicas, mas unidas por tecnologia padronizada ou proprietária permitindo portabilidade de dados e aplicações (por exemplo, \textit{cloud bursting} para balanceamento de carga entre nuvens).
+\end{itemize}
+
 	\section{Docker}
 	\subsection{Breve história das tecnologias de contêineres}
 	A história dos Contêineres começa em 1979 no Unix L7. Nele foi introduzido a chamada de sistema (\textit{system call}) \textit{chroot} capaz de mudar o diretório raiz de um processo e de seus processos filhos para um novo local no sistema de arquivos. Este avanço foi o início do conceito de isolamento de processos, pois limitava o acesso de cada processo ao sistema de arquivos. 
@@ -231,8 +293,8 @@ Abstract...
 	\begin{figure}[htb]
 		\caption{\label{fig_circulo}Diferenças entre VMs e Contêiners}
 		\begin{center}
-    		\includegraphics[scale=0.20]{vms.png}
-    		\includegraphics[scale=0.20]{containers.png}
+    		\includegraphics[scale=0.20]{pictures/vms.png}
+    		\includegraphics[scale=0.20]{pictures/containers.png}
 		\end{center}
 		\legend{Fonte: https://www.backblaze.com/blog/vm-vs-containers/}
 	\end{figure}
@@ -274,10 +336,20 @@ Abstract...
 	    \item Domain/Logic
 	\end{itemize}
 	
-	\begin{figure}[htb]
+	Sendo as responsabilidades de cada camada as seguintes:
+	
+	\textbf{Ports}: São a camada responsável por realizar o interfaceamento com algum tipo de IO, seja HTTP, Mensageria, Banco de Dados, ou qualquer outro.
+	
+	\textbf{Adapters}: Camada responsável por realizar a adaptação e transformação entre dados de um modelo do domínio interno para uma representação a ser usada externamente para alguma porta.
+	
+	\textbf{Controller/Application}: Tem o papel de controlar a interação e chamadas entre as portas junto as funcionalidades do domínio da aplicação.
+	
+	\textbf{Domain/Logic}: Lógica e modelos internos e específico da aplicação, contém a lógica principal do serviço.
+	
+	\begin{figure}[htpb]
 	    \caption{Diagrama de Arquitetura Hexagonal}
 	    \begin{center}
-	        \includegraphics[scale=0.6]{hexagonal1.png}
+	        \includegraphics[scale=0.6]{pictures/hexagonal1.png}
 	    \end{center}
 	    \label{fig:hexagonal1}
 	    \legend{Fonte: https://lmonkiewicz.com/wp-content/uploads/2017/04/hexagonal-e1491766585240.png}
@@ -319,7 +391,7 @@ Abstract...
 	\begin{figure}[!htbp]
 		\caption{\label{fig_git1}Anatomia do Git}
 		\begin{center}
-		\includegraphics[scale=0.4]{git.png}
+		\includegraphics[scale=0.4]{pictures/git.png}
 		\end{center}
 		\legend{Fonte: https://raw.githubusercontent.com/UnbDroid/AprendendoGithub/master/images/git.png}
 	\end{figure}
@@ -367,22 +439,80 @@ Abstract...
 	\begin{figure}[htb]
 		\caption{\label{fig_git2}Fluxo de trabalho em Git}
 		\begin{center}
-		\includegraphics[scale=1]{GIT2.png}
+		\includegraphics[scale=1]{pictures/GIT2.png}
 		\end{center}
-		\legend{Fonte: https://kevintshoemaker.github.io/StatsChats/GIT2.png}
+		\legend{Fonte: \url{https://kevintshoemaker.github.io/StatsChats/GIT2.png}}
 	\end{figure}
 
 	
 	\section{Distributed Tracing}
 	
+	Distributed Tracing, ou Rastreamento Distribuído, é uma técnica utilizada em sistemas distribuídos para conseguir acompanhar algum fluxo que acaba por interagir com diversos serviços. Muito utilizado para ajudar desenvolvedor em sessões de depuração afim de entender qual caminho de código está sendo executado e com quais parâmetros em um sistema complexo e distribuído. Geralmente esse sistema se compõe de um broker central para onde as métricas e dados de tracing são enviados pelos serviços, e um conjunto de código que roda em todos os serviços, responsável por realizar a amostragem e enviar esses dados para o broker principal. Enquanto os brokers esperam receber mensagens representando eventos de entrada ou saída dos serviços através de um processo coletor, as bibliotecas se encarregam de enviar essa menagem e também propagar informações de rastreabilidade para as próximas interações com outros serviços. Podemos ver um digrama exemplificando a arquitetura de um Distributed Tracing nas figuras \ref{fig_tracing_concept} e \ref{fig_tracing_components}
+	
+	\begin{figure}[htb]
+		\caption{\label{fig_tracing_concept}Anatomia de um Distributed Tracing}
+		\begin{center}
+		\includegraphics[scale=0.5]{pictures/tracing_concept.png}
+		\end{center}
+		\legend{Fonte: \url{https://cdn-images-1.medium.com/max/838/1*NuwuCvqZHLBJcJycRr1HTw.png}}
+	\end{figure}
+	
+	\begin{figure}[htb]
+		\caption{\label{fig_tracing_components}Componentes de um Distributed Tracing}
+		\begin{center}
+		\includegraphics[scale=1]{pictures/distributed-tracing-components.png}
+		\end{center}
+		\legend{Fonte: \url{http://blog.newrelic.com/wp-content/uploads/Distributed-tracing-components.png}}
+	\end{figure}
+	
+	Um dos primeiros Distributed Tracers que foi desenvolvido, foi o Dapper \cite{googledapper}, pela Google em meados de 2010. Com a abertura do código do Dapper outras empresas acabaram se interessando pelo projeto e funcionalidades e criaram suas próprias versões de tracers, entre eles alguns dos mais famosos: Zipkin\cite{zipkin}, pelo Twitter, e Jaeger\cite{jaegerarch}, pela Uber. Com o surgimento de novos tracers no mercado, a industria entrou em busca de um padrão para esse tipo de software, originando-se o OpenTracing\cite{opentracing}. OpenTracing é um padrão desenvolvido afim de definir normas e regras e padrões para implementação de Distributed Tracers. Nela são descritos estratégias para se realizar a identificação de informações gera mente importantes e o formato do tráfego de dados entre os serviços e os brokers.
+	
+	Grande parte do valor dos Distributed Tracing vem de suas ferramentas analíticas, que facilitam a vida do desenvolvedor e permitem com que ele faça análises de forma rápida e eficiente nos sistemas. Geralmente essas ferramentes vem junto com uma aplicação de Frontend que consegue exibir fluxos e montar gráficos. Entre eles o Flamegraph é muito utilizado para visualizarmos como a comunicação se aprofunda e se propaga na rede, uum exemplo de Flamegraph do Zipkin pode ser visto na figura \ref{fig_zipking_sample}. Outro tipo de visualização muito útil é a de mapa de Topologia de servços, que nada mais é que um grafo representando as interações entre diversos serviços, temos um exemplo na figura \ref{fig_topology_map}
+	
+	\begin{figure}[htb]
+		\caption{\label{fig_zipking_sample}Exemplo de Flamegraph do Zipkin}
+		\begin{center}
+		\includegraphics[scale=0.16]{pictures/zipkin-sample.png}
+		\end{center}
+		\legend{Fonte: \url{http://callistaenterprise.se/assets/blogg/build-microservices-part-7/Zipkin-sample.png}}
+	\end{figure}
+	
+	\begin{figure}[htb]
+		\caption{\label{fig_topology_map}Exemplo de Mapa de Topologia de Serviços}
+		\begin{center}
+		\includegraphics[scale=0.16]{pictures/service_topology_map.png}
+		\end{center}
+		\legend{Fonte: \url{https://blog-assets.risingstack.com/2016/May/Distributed_transaction_tracing_with_service_topology_map_trace_by_risingstack-1462456507669.png}}
+	\end{figure}
+	
+	\subsection{OpenTracing}
+	
+	Nessa seção iremos entender um pouco melhor como se organiza e os principais conceitos estabelecidos pelo padrão OpenTracing. Entre eles vamos entender como é feita a correlação entre eventos enviados pelos serviços e quais os mecanismos padrões utilizados para que isso seja efetivamente realizado por aplicações reais.
+	
+	
  
 \chapter{Tecnologias Utilizadas}
 	\section{Clojure}
+	
+	Clojure é uma linguagem de programação dinâmica e funcional. Sendo um dialeto de LISP que roda na JVM, é uma linguagem compilada, mas que mantém todas características dinâmicas a ser utilizadas em Runtime. Possui compatibilidade e interoperabilidade com todo ecossistema Java e de outras linguagens que rodem na JVM. Clojure enfatiza o uso de estruturas de dados imutáveis e de a filosofia de Code is Data, com um sistema poderoso de macros e de estruturas de dados mutáveis Thread Safe quando necessário. \cite{clojurerationale}
+	
+	Clojure é a principal linguagem de programação utilizada no Nubank, e também é muito familiar para o grupo, além de apresentar características interessantes para o desenvolvimento do projeto. como a grande habilidade para lidar com problemas de concorrência de forma segura e eficiente.
+	
+	Dentro do desenvolvimento do projeto Clojure foi utilizada como uma das principais linguagens de programação para serviços de Backend. Um dos recursos que torna Clojure especialmente interessante é a possível interação em tempo real com o código através de um REPL (Read Eval Print Loop), algo que foi utilizado em um dos módulos do projeto como será descrito mais a frente. Além disso a familiaridade dos desenvolvedores do Nubank com a linguagem foi um fator decisivo para que o projeto pudesse continuar a ser mantido por mais pessoas no futuro.
+	
+	\begin{figure}
+	    \centering
+	    \includegraphics[scale=0.1]{pictures/clojure_logo.png}
+	    \caption{Logo Clojure}
+	    \legend{Fonte: \url{https://cdn-images-1.medium.com/max/1200/1*eLqeIits5crU3G5b9LMEyg.png}}
+	    \label{fig:logo_clojure}
+	\end{figure}
+	
 	\section{Javascript}
-	\subsection{Typescript}
-	\subsection{NodeJS}
-	\subsection{React}
-	\subsection{Electron}
+    	\subsection{Typescript}
+    	\subsection{NodeJS}
+    	\subsection{React}
+    	\subsection{Electron}
 	\section{ZeroMQ}
 	\section{Docker}
 	\section{Kubernetes}
@@ -391,9 +521,118 @@ Abstract...
 \chapter{Metodologia do Trabalho}
 
 \chapter{Especificação de Requisitos do Sistema}
-	a
+    Escolhemos especificar os requisitos de sistema do nosso projeto seguindo o modelo de referência ODP, pois ele apresenta uma forma de simplificar a descrição de sistemas complexos por meio dos seus Pontos de Vista.\cite{odppart1} Sabíamos também que gostaríamos se seguir alguns princípios de projeto, descritos na Tabela \ref{principios_de_projeto}. Esses princípios foram resultado de conversas com engenheiros de software e interessados no projeto, e nos ajudaram a guiar durante a definição dos requisitos de sistema.
+    \begin{table}[]
+        \centering
+        \caption{Princípios de Projeto}
+        \label{principios_de_projeto}
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|p{10cm}|}
+            \hline
+            Princípio de Projeto                 & Descrição \\ \hline
+            Ambientes de curta duração           & O desenvolvedor deve ser capaz de criar e deletar ambientes com rapidez e facilidade                                 \\ \hline
+            Visualização de fluxos complexos     & O desenvolvedor deve ser capaz de visualizar o resultado de suas requisições HTTP e mensagens Kafka                  \\ \hline
+            Ambiente parecido com o local        & O desenvolvedor deve ter uma experiência de desenvolvimento similar com o ambiente de sua máquina                    \\ \hline
+            Esconde complexidade de configuração & O desenvolvedor não deve precisar conhecer a configuração dos serviços que ele precisa disponíveis no ambiente dele. \\ \hline
+        \end{tabular}
+        }
+        \legend{Fonte: os autores}
+    \end{table}
+	\section{Ponto de Vista da Empresa}
+	    As empresas que podem se beneficiar do nosso projeto devem ter alguma semelhança com o processo de negócio de desenvolvimento de novas funcionalidades, descrito na Figura \ref{todo}
+	\section{Ponto de Vista da Informação}
+	\section{Ponto de Vista da Computação}
+	\section{Ponto de Vista da Engenharia}
+	\section{Ponto de Vista da Tecnologia}
+
+\chapter{Especificação de Requisitos de Qualidade}
+Nessa seção mostraremos os requisitos de qualidade de software mais relevantes, utilizados no planejamento e implementação do projeto de software. Foram tomados como um subconjunto da especificação \cite{softquality}. Detalhamos os atributos de qualidade de produto, e qualidade de uso. 
+\section{Qualidade de Produto}
+   \subsection{Usabilidade}
+         \subsubsection {Aprendabilidade}
+          Os usuários do formicarium devem conseguir aprender sobre as principais features e operar nas features mínimas da plataforma dentro de um período estimado de 30 minutos de aprendizado. Essas features mínimas correspondem às funcionalidades descritas no Produto Mínimo Viável.\par
+          \textbf{Método de avaliação:}
+          número de novos usuários do formicarium que conseguiram fazer pelo menos uma operação em cada uma das features mínimas propostas pelo Produto Mínimo Viável $>$ 70\%
+     \subsection{Segurança}
+            \subsubsection{Responsabilização}
+            Devemos manter o uso total contabilizado de tempo de máquinas na nuvem dividido por squad, para posterior contabilização de custos, proporcional ao uso.\par
+            \textbf{Método de avaliação:}
+            Ter essas informações disponíveis por meio de um relatório mensal.
+            \subsubsection{Confidencialidade}
+            O cluster de máquinas não deve ser acessível de fora da rede da empresa, para evitar vazamento de código proprietário, chaves da Amazon, etc.\par
+            \textbf{Método de avaliação:}
+            Verificação de rede por meio de relatórios semanais de um especialista em redes.
+     \subsection{Portabilidade}
+            \subsubsection{Instalabilidade}
+            O sistema deve rodar em MacOS, Arch Linux, Ubuntu 16.04 LTS, Ubuntu 18.04 LTS.\par
+            \textbf{Método de avaliação}
+            Número de bug reports ligados à cada plataformas específica menor do que 5 por mês.
+   
+   \section {Qualidade de Uso}
+     \subsection{Eficiência}
+          Recursos de serviços da amazon gastos para o usuário criar ambientes e fazer deploy de serviços e devspaces.
+               Otimizar o uso de máquinas usadas num deploy. Deixar o tipo de máquina ser escolhido pelo usuário, ou fazer uso ótimo e ir trocando o tipo de máquina segundo algum algoritmo de otimização. O mesmo vale para volumes.\par
+              \textbf{Método de avaliação:}
+              TBD
+     \subsection{Eficiácia}
+          Com que grau de acurácia o sistema permite que o usuário crie ambientes e deploy de microsserviços?
+          \begin{itemize}
+              \item O sistema deve ser capaz de criar ambientes.
+              \item O sistema deve ser capaz de fazer deploy de microsserviços.
+          \end{itemize}
+          \textbf{Método de avaliação:}
+              Taxa de erro em qualquer etapa de provisionamento de infraestrutura $<$ 5\%
+     \subsection{Satisfação}
+          Como podemos facilitar o dia a dia do desenvolvedor aumentando seu grau de satisfação durante o processo de desenvolvimento (tempo poupado, maior confiança nas alterações de código)\par
+          \textbf{Método de avaliação}
+          \begin{itemize}
+              \item Número de reclamações/bugs reportados que atrapalharam o fluxo de desenvolvimento do desenvolvedor:  $<=$ 1 bug/semana
+              \item Frequência de uso do Formicarium: $>=$ 1 vez por semana/squad
+          \end{itemize}
+     \subsection{Isenção de Risco Econômico}
+          Os custos do cluster não devem crescer indefinidamente.\par
+              \textbf{Método de avaliação:}
+              Gastos monetários com o cluster $<=$ 50000 por mês\par
+         \subsection{Cobertura do Contexto}
+              O quão abrangente é o nosso produto no nicho que ele pretende influenciar?\par
+              \textbf{Método de avaliação:} 
+              90\% dos engenheiros do Nubank usam o formicarium pelo menos uma vez por semana.
+
+
+
+
+
 	
 \chapter{Projeto e Implementação}
+    
+    \section{Devspaces}
+    
+    Um Devspace, como foi batizado pelo grupo, é um ambiente de desenvolvimento isolado que roda em cima da plataforma Formicarium. Ele é o ambiente que o desenvolvedor vai ter disponível para uso e que vai interagir durante o seu tempo testando e desenvolvendo os serviços. 
+    
+    Os Devspaces são provisionados e configurados de forma automática pelo serviço Soil, a medida que um desenvolvedor requisita sua criação através da CLI. Para obter dados de configuração e setup inicial do Devspace, o Soil consulta um servidor de configurações via Webhooks, esse encarregado de fornecer todo configuração específica da empresa para fazer o bootstrap de um novo Devspace.
+    
+    Objetivamente, os Devspaces são Namespaces do Kubernetes que são gerenciados pelo Soil, além dos recursos padrões do Kubernetes, esse Namespaces acabam recebendo serviços adicionais do Formicarium, sendo esses o Hive e o Tanajura. A interação com os Devspaces é feito sempre através da CLI do Formicarium, não exigindo que o usuário tenha que ter o ferramental do Kubernetes instalado e configurado em sua máquina.
+    
+    Dentro de um Devspace os serviços que rodam nele conseguem se localizar entre si por meio do servidor de DNS do Kubernetes que garante isolamento entre Namespaces, dessa forma conseguimos alcançar um isolamento entre serviços entre Devspaces, mesmo que 2 desenvolvedores estejam executando o mesmo serviço. Além disso, cada Devspace recebe do Config Server um conjunto de aplicações de infra-estrutura ou de uso comum, que também garante isolamento dos demais Devspaces, como por exemplo, a existência de um broker de mensageria por Devspace. não havendo confusão na produção e consumo de mensagens.
+    
+        \begin{figure}[htbp]
+			\caption{\label{fig_devspace1}Anatomia de um Devspace}
+			\begin{center}
+			\includegraphics[scale=0.30]{pictures/devspace1.png}
+			\end{center}
+			\legend{Fonte: os autores}
+			% \caption{Fonte: própria}
+		\end{figure}
+    
+    	\begin{figure}[htbp]
+			\caption{\label{fig_create_devspace}Fluxo de Criação de Devspaces}
+			\begin{center}
+			\includegraphics[scale=0.40]{pictures/create-devspace.png}
+			\end{center}
+			\legend{Fonte: os autores}
+			% \caption{Fonte: própria}
+		\end{figure}
+
 	\section{FileSync}
 
 	Um dos grandes desafios do projeto foi a construção de um sistema para sincronização de arquivos em uma arquitetura distribuída de microsserviços.
@@ -419,7 +658,7 @@ Abstract...
 % 		\begin{figure}[htb]
 % 			\caption{\label{fig_arquitetura1}Arquitetura da solução}
 % 			\begin{center}
-% 			\includegraphics[scale=0.50]{arquitetura-da-solucao.png}
+% 			\includegraphics[scale=0.50]{pictures/arquitetura-da-solucao.png}
 % 			\end{center}
 % 			\legend{Fonte: os autores}
 % 		\end{figure}
@@ -451,7 +690,7 @@ Abstract...
 		\begin{figure}[htb]
 			\caption{\label{fig_arquitetura2}Fluxo do Tanajura}
 			\begin{center}
-			\includegraphics[scale=0.20]{tanajura-flow.png}
+			\includegraphics[scale=0.30]{pictures/tanajura-flow.png}
 			\end{center}
 			\legend{Fonte: os autores}
 			% \caption{Fonte: própria}
@@ -509,7 +748,7 @@ Abstract...
 	De maneira geral, o \textit{Stinger} é um gerenciador de processos integrado com o Git e que expõe suas funcionalidades através de um servidor HTTP.
 
 \section{Frontend}
-\subsection{Organização do código}
+    \subsection{Organização do código}
 Para oferecer uma interface amigável aos usuários, foram construídas duas aplicações: uma Interface de linha de comando e uma Aplicação \textit{Desktop}. Ambas têm funcionalidades semelhantes, porém a segunda oferece elementos de interface gráfica essenciais para a construção do módulo de \textit{Distributed Debugger} do sistema.
 
 Como as duas aplicações compartilham diversos módulos, todo o código comum foi extraído para uma biblioteca (chamada \textit{common}) e seu código fica disponível para ambas as aplicações através de um sistema de dependências oferecido pelo NPM.
@@ -528,8 +767,8 @@ Além do incremento automático em cada módulo, foi utilizada a ferramenta \tex
 
 Todo este ferramental tornou a experiência de desenvolvimento deste projeto muito mais eficiente e facilitará também sua manutenção.
 
-\subsection{Interface de linha de comando}
-\subsection{Aplicação \textit{Desktop}}
+    \subsection{Interface de linha de comando}
+    \subsection{Aplicação \textit{Desktop}}
 
 \chapter{Testes e Avaliação}
 \chapter{Considerações Finais}

@@ -199,6 +199,7 @@
 
 %%  Defining "POLIheader" pagestyle
 \fancypagestyle{POLIheader}{%
+
 	\fancyhf{} % clear all header and footer fields
 	\fancyhead[RO,LE]{\small\thepage}
 	\renewcommand{\headrulewidth}{0pt}
