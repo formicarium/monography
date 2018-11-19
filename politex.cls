@@ -1078,7 +1078,7 @@
     \begin{minipage}{.49\textwidth}
       \begin{espacoumemeio}
         \begin{sloppypar}
-            {\comentarioformat\ABNTcomentariodata}\\[0.3cm]
+            {\comentarioformat\ABNTcomentariodata}\vspace{0.8cm}
         \end{sloppypar}
 
         \ABNTifnotempty{\ABNTareaconcdata}%
