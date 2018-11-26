@@ -1,0 +1,24 @@
+\begin{resumo}
+	Em uma arquitetura distribuída de microsserviços, é comum enfrentar problemas relacionados à produtividade enquanto o software é desenvolvido. Uma das causas deste problema é a necessidade de se executar diversos microsserviços ao mesmo tempo para iterar, testar e validar algum fluxo de negócio. Estes processos computacionais demandam uma quantidade de recursos (processamento e memória) que nem sempre estão disponíveis na máquina do desenvolvedor.
+	
+	Um outro problema comum é a dificuldade de se entender e depurar fluxos complexos de negócio que envolvam comunicação entre diversos microsserviços através de diferentes protocolos de troca de mensagens.
+	
+	Foi neste contexto que surgiu a parceria entre a Poli e o Nubank para o desenvolvimento de um projeto que tentasse mitigar os problemas acima descritos.
+	
+%%	O Nubank é uma fintech brasileira que conta com mais de 200 engenheiros, trabalhando diariamente em mais de 200 microsserviços para atender os mais de 5 milhões de clientes ativos em seus diversos produtos. A empresa é referência nacional e mundial em tecnologia, devido a sua arquitetura de software moderna, baseada em microsserviços. Porém, as implicações negativas deste modelo já estão se manifestando na empresa há algum tempo, prejudicando a produtividade das equipes.
+	
+	O projeto foi co-orientado por um dos engenheiros mais prestigiados do Nubank, que está presente na empresa desde praticamente o seu nascimento, sendo responsável por importantes decisões arquiteturais e por ter participado da construção da fundação de toda a tecnologia da empresa.
+	
+	Através do intenso uso de computação em nuvem, orquestração de Containers Docker, conceitos de Distributed Tracing e técnicas para sincronização de file systems, este projeto visa aumentar a produtividade dos engenheiros do Nubank em suas tarefas de desenvolvimento e manutenção dos microsserviços da empresa.
+	
+	Para o desenho da solução, foi feito um estudo profundo sobre modelos de PaaS, características de microsserviços de modo geral, bem como seu uso no contexto específico do Nubank. 
+	
+	O resultado foi a construção de um ambiente de desenvolvimento para arquiteturas de larga escala baseada em microsserviços, chamado de Formicarium. O projeto foi implantado em um squad do Nubank nos últimos meses de desenvolvimento do trabalho para que feedbacks pudessem ser colhidos e para que fossem feitos os ajustes necessários.
+	
+	Com base nos resultados, pode-se concluir que o projeto conseguiu atender os requisitos propostos e mitigar os diversos problemas apresentados. A sua implantação foi bem recebida pelo squad escolhido e sua difusão não é uma tarefa complicada, dado sua fácil utilização e vantagens imediatas. Inclusive, ao longo do projeto foi tomado o cuidado de se extrair os componentes altamente acoplados com características específicas do Nubank, de modo que a implantação da solução até mesmo em outras empresas fosse possível sem muitas modificações.
+	
+%
+% \\[3\baselineskip]
+%
+\textbf{Palavras-Chave} -- Microsserviço, Docker, Kubernetes, Computação em Nuvem, Distributed Tracing.
+\end{resumo}
