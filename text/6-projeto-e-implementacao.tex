@@ -44,7 +44,7 @@
 	
 	Os serviços em que o engenheiro está trabalhando não estão sendo compilados e executados na mesma máquina em que está o código fonte. Na verdade eles estão sendo executados em um contêiner Docker, gerenciado por um \textit{cluster} Kubernetes, operando em uma infraestrutura de \textit{hardware} fornecida pela AWS EC2. Para que mudanças no código fonte fossem de fato percebidas pelo desenvolvedor, este precisaria compilar uma nova imagem Docker com o código fonte atualizado, publica-lá em um repositório de contêineres e realizar a implantação desta nova imagem no \textit{cluster} remoto. Este processo, em um contexto de desenvolvimento, é extremamente ineficiente, o que tornaria a ferramenta pouco dinâmica e não atrativa para o engenheiro.
 
-	Para evitar a geração de uma nova imagem Docker a cada iteração no código fonte, foi desenvolvida uma imagem genérica capaz de compilar e executar qualquer serviço da Nubank em modo de desenvolvimento. Esta imagem foi apelidada de Chamber e uma de suas características é a sua extensibilidade, permitindo que em melhorias futuras sejam desenvolvidas versões para outras linguagens e plataformas (Como por exemplo \textit{NodeJS}, \textit{Ruby}, \textit{Scala}, \textit{etc.}). Para implantação no Nubank, foi desenvolvida a imagem Chamber-lein, capaz de executar programas escritos em \textit{Clojure}, principal linguagem utilizada nos microsserviços do Nubank.
+	Para evitar a geração de uma nova imagem Docker a cada iteração no código fonte, foi desenvolvida uma imagem genérica capaz de compilar e executar qualquer serviço da Nubank em modo de desenvolvimento. Esta imagem foi apelidada de Chamber e uma de suas características é a sua extensibilidade, permitindo que em melhorias futuras sejam desenvolvidas versões para outras linguagens e plataformas (Como por exemplo \textit{Node.js}, \textit{Ruby}, \textit{Scala}, \textit{etc.}). Para implantação no Nubank, foi desenvolvida a imagem Chamber-lein, capaz de executar programas escritos em \textit{Clojure}, principal linguagem utilizada nos microsserviços do Nubank.
 	
 	Além disto, esta imagem tem um componente de software capaz de atualizar o código do serviço que está sendo executado dentro do contêiner através do Git.
 	
@@ -144,206 +144,211 @@
 
 \section{Frontend}  
     \subsection{Organização do código}
-Para oferecer uma interface amigável aos usuários, foram construídas duas aplicações: uma Interface de linha de comando e uma Aplicação \textit{Desktop}. Ambas têm funcionalidades semelhantes, porém a segunda oferece elementos de interface gráfica essenciais para a construção do módulo de \textit{Distributed Debugger} do sistema.
+        Para oferecer uma interface amigável aos usuários, foram construídas duas aplicações: uma Interface de linha de comando e uma Aplicação \textit{Desktop}. Ambas têm funcionalidades semelhantes, porém a segunda oferece elementos de interface gráfica essenciais para a construção do módulo de \textit{Distributed Debugger} do sistema.
 
-Como as duas aplicações compartilham diversos módulos, todo o código comum foi extraído para uma biblioteca (chamada \textit{common}) e seu código fica disponível para ambas as aplicações através de um sistema de dependências oferecido pelo NPM.
+        Como as duas aplicações compartilham diversos módulos, todo o código comum foi extraído para uma biblioteca (chamada \textit{common}) e seu código fica disponível para ambas as aplicações através de um sistema de dependências oferecido pelo NPM.
 
-Foi tomado o cuidado de não se criar acoplamentos dos módulos desta biblioteca com casos de uso específicos de cada aplicação, tornando o código mais reaproveitável e desacoplado, com responsabilidades bem definidas.
+        Foi tomado o cuidado de não se criar acoplamentos dos módulos desta biblioteca com casos de uso específicos de cada aplicação, tornando o código mais reaproveitável e desacoplado, com responsabilidades bem definidas.
 
-O código dos três módulos vive em mesmo repositório Git, dividido apenas por pastas. Esta prática é comum para o gerenciamento de múltiplos módulos que compõe um sistema maior e  repositórios com esta característica são denominados \textit{monorepos}.
+        O código dos três módulos vive em mesmo repositório Git, dividido apenas por pastas. Esta prática é comum para o gerenciamento de múltiplos módulos que compõe um sistema maior e  repositórios com esta característica são denominados \textit{monorepos}.
 
-Este tipo de organização é vantajosa pois preserva os benefícios de desacoplamento das diferentes partes do sistema, porém eliminando, através do uso de ferramentas específicas, as complexidades de se gerenciar as dependências entre os diversos módulos, tanto no estágio de desenvolvimento quanto nos estágios de compilação e publicação.
+        Este tipo de organização é vantajosa pois preserva os benefícios de desacoplamento das diferentes partes do sistema, porém eliminando, através do uso de ferramentas específicas, as complexidades de se gerenciar as dependências entre os diversos módulos, tanto no estágio de desenvolvimento quanto nos estágios de compilação e publicação.
 
-Para gerenciar as dependências do \textit{monorepo}, foi utilizado a ferramenta \textit{yarn workspaces}, que otimiza o uso de memória em disco do código fonte e o tempo de instalação inicial para novos desenvolvedores através do compartilhamento das dependências comuns entre os vários módulos. Ela também é responsável por criar \textit{links} simbólicos (\textit{symlinks}) entre os módulos quando em estágio de desenvolvimento. Os \textit{symlinks} permitem iterações mais rápidas de desenvolvimento, pois uma mudança no código de uma dependência irá refletir automaticamente nos módulos dependentes, sem a necessidade de se incrementar versões e recompilar partes do programa.
+        Para gerenciar as dependências do \textit{monorepo}, foi utilizado a ferramenta \textit{yarn workspaces}, que otimiza o uso de memória em disco do código fonte e o tempo de instalação inicial para novos desenvolvedores através do compartilhamento das dependências comuns entre os vários módulos. Ela também é responsável por criar \textit{links} simbólicos (\textit{symlinks}) entre os módulos quando em estágio de desenvolvimento. Os \textit{symlinks} permitem iterações mais rápidas de desenvolvimento, pois uma mudança no código de uma dependência irá refletir automaticamente nos módulos dependentes, sem a necessidade de se incrementar versões e recompilar partes do programa.
 
-Todos os módulos do projeto utilizam \textit{Semantic Versioning} como padrão versionamento. O incremento é feito automaticamente através de uma ferramenta que analisa as mensagens presentes nos commits do Git para determinar, através de \textit{tokens} pré-definidos, qual será o incremento de versão: \textit{Major}, \textit{minor}, \textit{patch}.
+        Todos os módulos do projeto utilizam \textit{Semantic Versioning} como padrão versionamento. O incremento é feito automaticamente através de uma ferramenta que analisa as mensagens presentes nos commits do Git para determinar, através de \textit{tokens} pré-definidos, qual será o incremento de versão: \textit{Major}, \textit{minor}, \textit{patch}.
 
-Além do incremento automático em cada módulo, foi utilizada a ferramenta \textit{Lerna} para determinar quais módulos e dependências devem ter suas versões atualizadas, através também da análise de quais arquivos foram modificados nos commits desde a última atualização.
+        Além do incremento automático em cada módulo, foi utilizada a ferramenta \textit{Lerna} para determinar quais módulos e dependências devem ter suas versões atualizadas, através também da análise de quais arquivos foram modificados nos commits desde a última atualização.
 
-Todo este ferramental tornou a experiência de desenvolvimento deste projeto muito mais eficiente e facilitará também sua manutenção.
+        Todo este ferramental tornou a experiência de desenvolvimento deste projeto muito mais eficiente e facilitará também sua manutenção.
 
     \subsection{Interface de linha de comando}
-    Para a construção deste software, foi utilizado a linguagem Typescript, com a plataforma NodeJS. A framework para desenvolvimento foi a ocli, mantida pela Salesforce.
-    Este software é distribuído através do NPM (\textit{Node Package Manager)}. Por ser uma ferramenta já presente nos computadores dos engenheiros do Nubank, a instalação da linha de comando se torna simples e rápida, basta executar o comando
+        
+        Para a construção deste software, foi utilizado a linguagem Typescript, com a plataforma Node.js. A framework para desenvolvimento foi a ocli, mantida pela Salesforce.
+        
+        Este software é distribuído através do NPM (\textit{Node Package Manager)}. Por ser uma ferramenta já presente nos computadores dos engenheiros do Nubank, a instalação da linha de comando se torna simples e rápida, basta executar o comando
     \begin{verbatim}
-	npm install -g @formicarium/cli
+	    npm install -g @formicarium/cli
 	\end{verbatim}
 	
 	Com isso, o binário \textit{fmc} já fica disponível para ser executado através do terminal.
 	
 	Para atualizar a versão do software após a publicação de alguma modificação, basta o comando
 	\begin{verbatim}
-	npm update -g @formicarium/cli
+	    npm update -g @formicarium/cli
 	\end{verbatim}
 	
 	Este mecanismo de fácil distribuição e atualização foi escolhido para facilitar ainda mais a adesão dos engenheiros ao uso do ecossistema Formicarium.
 
-A interface de linha de comando apresenta suas funcionalidades divididas em subprogramas, cada um referente a um conjunto de casos de uso agrupados logicamente. Utilizando o comando \textit{help}, o engenheiro tem acesso à documentação da ferramenta, podendo listar os subprogramas e comandos disponíveis dentro de cada nível hierárquico de funcionalidades e entender o que fazem através de descrições e exemplos de uso.
+    A interface de linha de comando apresenta suas funcionalidades divididas em subprogramas, cada um referente a um conjunto de casos de uso agrupados logicamente. Utilizando o comando \textit{help}, o engenheiro tem acesso à documentação da ferramenta, podendo listar os subprogramas e comandos disponíveis dentro de cada nível hierárquico de funcionalidades e entender o que fazem através de descrições e exemplos de uso.
 
-Por exemplo, ao requisitar ajuda no contexto geral da linha de comando:
+    Por exemplo, ao requisitar ajuda no contexto geral da linha de comando:
 
-\begin{verbatim}
-A CLI to operate on Formicarium
-VERSION
-    @formicarium/cli/1.3.2 darwin-x64 node-v11.1.0
-USAGE
-    $ fmc [COMMAND]
-COMMANDS
-    devspace  Creates a Devspace
-    git       Configures local fmcgit and hive
-    help      display help for fmc
-    repl      Connects to remote repl. If no service is provided, connects on Hive's Repl
-    service   Deletes a service in the current Devspace
-    setup     Configures Formicarium CLI to one cluster
-\end{verbatim}
-
-Ao requisitar ajuda para um contexto específico (no caso, o contexto \textit{devspace}):
-\begin{verbatim}
-Creates a Devspace
-
-USAGE
-  $ fmc devspace:COMMAND
-
-COMMANDS
-  devspace:create    Creates a Devspace
-  devspace:delete    Deletes a Devspace
-  devspace:info      Get information for the current devspace
-  devspace:list      List availables Devspaces
-  devspace:services  Lists the services in your devspace
-  devspace:use       Configures to use one Devspace context
-\end{verbatim}
-
-
-Ao requisitar ajuda para um comando específico (no caso, o comando \textit{devspace:create}):
-\begin{verbatim}
-Creates a Devspace
-
-USAGE
-  $ fmc devspace:create ID
-
-OPTIONS
-  -h, --help  show CLI help
-  --test
-
-EXAMPLE
-  $ fmc devspace:create paps
-\end{verbatim}
-
-
-A facilidade proporcionada ao engenheiro do Nubank para entender o uso da ferramenta através desta documentação interativa fez parte da estratégia do grupo para disseminação e adesão da ferramenta por toda a empresa de maneira escalável.
-
-Lista de comandos disponíveis e uma breve descrição do que fazem
-
-devspace
-  devspace:create    Creates a Devspace
-  devspace:delete    Deletes a Devspace
-  devspace:info      Get information for the current devspace
-  devspace:list      List availables Devspaces
-  devspace:services  Lists the services in your devspace
-  devspace:use       Configures to use one Devspace context
-  
-
-sync
-  sync:push   Configures local fmcgit and hive
-  sync:setup  Deploys service
-
-repl
-
-service
-  service:delete   Deletes a service in the current Devspace
-  service:deploy   Deploys service
-  service:logs     A service logs in the current Devspace
-  service:restart  Restart a service deployed in dev mode
-  service:status   Restart a service deployed in dev mode
-  
-
-setup
+    \begin{verbatim}
+    A CLI to operate on Formicarium
+    VERSION
+        @formicarium/cli/1.3.2 darwin-x64 node-v11.1.0
+    USAGE
+        $ fmc [COMMAND]
+    COMMANDS
+        devspace  Creates a Devspace
+        git       Configures local fmcgit and hive
+        help      display help for fmc
+        repl      Connects to remote repl. If no service is provided, connects on Hive's Repl
+        service   Deletes a service in the current Devspace
+        setup     Configures Formicarium CLI to one cluster
+    \end{verbatim}
+    
+    Ao requisitar ajuda para um contexto específico (no caso, o contexto \textit{devspace}):
+    \begin{verbatim}
+    Creates a Devspace
+    
+    USAGE
+      $ fmc devspace:COMMAND
+    
+    COMMANDS
+      devspace:create    Creates a Devspace
+      devspace:delete    Deletes a Devspace
+      devspace:info      Get information for the current devspace
+      devspace:list      List availables Devspaces
+      devspace:services  Lists the services in your devspace
+      devspace:use       Configures to use one Devspace context
+    \end{verbatim}
+    
+    
+    Ao requisitar ajuda para um comando específico (no caso, o comando \textit{devspace:create}):
+    \begin{verbatim}
+    Creates a Devspace
+    
+    USAGE
+      $ fmc devspace:create ID
+    
+    OPTIONS
+      -h, --help  show CLI help
+      --test
+    
+    EXAMPLE
+      $ fmc devspace:create paps
+    \end{verbatim}
 
 
+    A facilidade proporcionada ao engenheiro do Nubank para entender o uso da ferramenta através desta documentação interativa fez parte da estratégia do grupo para disseminação e adesão da ferramenta por toda a empresa de maneira escalável.
 
+
+    
+    \begin{table}[ht]
+    \centering
+    \begin{tabular}{l l}
+    Comando & Descrição \\
+    \hline
+      devspace:create    & Cria um novo devspace \\
+      devspace:delete    & Deleta um devspace existente \\
+      devspace:info      & Obtém informações sobre o devspace atual \\
+      devspace:list      & Lista todos os devspaces disponíveis \\
+      devspace:services  & Lista todos os serviços em execução no devspace atual \\
+      devspace:use       & Muda o contexto do Formicarium para utilizar outro devspace \\
+      sync:push          & Sincroniza o sistema de arquivos local com o de um serviço remoto \\
+      service:delete     & Deleta uma serviço em execução no devspace atual \\
+      service:deploy     & Implanta um novo serviço no devspace atual \\
+      service:logs       & Obtém os \textit{logs} de um serviço \\
+      service:restart    & Reinicia o processo do serviço \\
+      repl               & Inicia uma sessão de REPL com o serviço \\
+    \end{tabular}
+    \caption{Comandos disponíveis e uma breve descrição do que fazem}
+    \label{tab:roles}
+    \end{table}
 
     \subsection{Aplicação \textit{Desktop}}
 
-Como parte do ferramental do ambiente Formicarium, foi desenvolvida uma aplicação Desktop multiplataforma (Windows, Linux, OS X) com o intuito de melhorar a experiência dos usuários nas funções mais comuns e também para atender requisitos do sistema que exigiam interfaces gráficas mais interativas e avançadas. A aplicação foi desenvolvida utilizando tecnologias web (HTML5, CSS3 e Javascript), o que tornou possível sua execução em diferentes plataformas utilizadas pelos engenheiros do Nubank. Como era necessário o uso de \textit{APIs} nativas do sistema (como acesso ao sistema de arquivos e execução de outros programas a partir da interface gráfica) que não seriam possível no browser, foi utilizada a \textit{framework} Electron para empacotar a aplicação em um binário capaz de ter acesso às \textit{system calls} necessárias. Electron é a framework por trás de diversos projetos populares como Slack, WhatsApp Desktop, Visual Studio Code, Atom, Spotify entre outros. Além disso, conta com uma enorme comunidade, melhorando ainda as características de manutenibilidade de software da solução.
+    Como parte do ferramental do ambiente Formicarium, foi desenvolvida uma aplicação Desktop multiplataforma (Windows, Linux, OS X) com o intuito de melhorar a experiência dos usuários nas funções mais comuns e também para atender requisitos do sistema que exigiam interfaces gráficas mais interativas e avançadas. A aplicação foi desenvolvida utilizando tecnologias web (HTML5, CSS3 e Javascript), o que tornou possível sua execução em diferentes plataformas utilizadas pelos engenheiros do Nubank. Como era necessário o uso de \textit{APIs} nativas do sistema (como acesso ao sistema de arquivos e execução de outros programas a partir da interface gráfica) que não seriam possível no browser, foi utilizada a \textit{framework} Electron para empacotar a aplicação em um binário capaz de ter acesso às \textit{system calls} necessárias. Electron é a framework por trás de diversos projetos populares como Slack, WhatsApp Desktop, Visual Studio Code, Atom, Spotify entre outros. Além disso, conta com uma enorme comunidade, melhorando ainda as características de manutenibilidade de software da solução.
 
-Para a sua distribuição dentro do Nubank, o software compilado foi disponibilizado em um \textit{bucket} da \textit{AWS S3} acessível apenas para funcionários credenciados \textit{download} e execução para começar a utilizá-lo.
+    Para a sua distribuição dentro do Nubank, o software compilado foi disponibilizado em um \textit{bucket} da \textit{AWS S3} acessível apenas para funcionários credenciados \textit{download} e execução para começar a utilizá-lo.
 
-A aplicação ainda não conta com sistemas automatizados de atualização, sendo necessária a obtenção manual de uma nova versão sempre que o engenheiro veja a necessidade de atualização. Este mecanismo de atualização poderá ser aprimorado em melhoria futuras.
+    A aplicação ainda não conta com sistemas automatizados de atualização, sendo necessária a obtenção manual de uma nova versão sempre que o engenheiro veja a necessidade de atualização. Este mecanismo de atualização poderá ser aprimorado em melhoria futuras.
 
-\subsection{Gerenciamento de Devspaces}
-Esta área tem como objetivo mostrar ao engenheiro os Devspaces disponíveis para serem utilizados. Normalmente o Devspace pessoal do engenheiro estará selecionado, porém é possível por exemplo alternar entre este e o Devspace do \textit{squad} ou ainda o de algum colega caso queiram compartilhar alguma configuração para reproduzir ambientes de testes e desenvolvimento.
+    \subsection{Gerenciamento de Devspaces}
+    Esta área tem como objetivo mostrar ao engenheiro os Devspaces disponíveis para serem utilizados. Normalmente o Devspace pessoal do engenheiro estará selecionado, porém é possível por exemplo alternar entre este e o Devspace do \textit{squad} ou ainda o de algum colega caso queiram compartilhar alguma configuração para reproduzir ambientes de testes e desenvolvimento.
 
-\begin{figure}[htb]
-	\caption{\label{fig_frontend_devspaces}Tela Lista de Devspaces}
-	\begin{center}
-	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-devspaces.png}
-	\end{center}
-	\legend{Fonte: Elaborado pelos autores}
-\end{figure}
+    \begin{figure}[htb]
+    	\caption{\label{fig_frontend_devspaces}Tela Lista de Devspaces}
+    	\begin{center}
+    	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-devspaces.png}
+    	\end{center}
+    	\legend{Fonte: Elaborado pelos autores}
+    \end{figure}
 
 
 
-\subsection{Devspace}
-Esta área tem como objetivo mostrar informações e proporcionar interações com o Devspace específico selecionado pelo engenheiro.
+    \subsection{Devspace}
+    Esta área tem como objetivo mostrar informações e proporcionar interações com o Devspace específico selecionado pelo engenheiro.
 
-\subsubsection{Infraestrutura}
-Nesta área o engenheiro pode conferir o status dos serviços básicos de infraestrutura do Devspace, como o Hive (para \textit{Distributed Tracing}) e o Tanajura (para sincronização de arquivos). Também é possível extrair os logs destes serviços em tempo real.
+    \subsubsection{Infraestrutura}
+    Nesta área o engenheiro pode conferir o status dos serviços básicos de infraestrutura do Devspace, como o Hive (para \textit{Distributed Tracing}) e o Tanajura (para sincronização de arquivos). Também é possível extrair os logs destes serviços em tempo real.
 
-\begin{figure}[htb]
-	\caption{\label{fig_frontend_devspace_info}Tela Informações do Devspace}
-	\begin{center}
-	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-devspace-info.png}
-	\end{center}
-	\legend{Fonte: Elaborado pelos autores}
-\end{figure}
+    \begin{figure}[htb]
+    	\caption{\label{fig_frontend_devspace_info}Tela Informações do Devspace}
+    	\begin{center}
+    	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-devspace-info.png}
+    	\end{center}
+    	\legend{Fonte: Elaborado pelos autores}
+    \end{figure}
+    
+    \subsubsection{Serviços}
+    
+    Nesta área o engenheiro pode conferir o status dos serviços implantados no Devspace atual e também interagir com cada um deles de forma independente. É possível a obtenção em tempo real dos \textit{logs} (tudo que for direcionado ao \textit{stdout} e \textit{stderr} do processo), a reinicialização do processo e também a sua remoção do Devspace através de botões. A lista também apresenta as interfaces de cada processo expostas para a \textit{internet} para permitir outros tipos de interação, como por exemplo a interface de um possível servidor HTTP do serviço e a interface HTTP do Stinger, que é um gerenciador de processos oferecido pelo Formicarium e que está presente nos serviços implantados no Devspace.
+    
+    \begin{figure}[htb]
+    	\caption{\label{fig_frontend_devspace_services}Tela Serviços do Devspace}
+    	\begin{center}
+    	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-devspace-services.png}
+    	\end{center}
+    	\legend{Fonte: os autores - 2018-11-10}
+    \end{figure}
+    
+    \begin{figure}[htb]
+    	\caption{\label{fig_frontend_logs}Tela Logs de um serviço}
+    	\begin{center}
+    	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-logs.png}
+    	\end{center}
+    	\legend{Fonte: Elaborado pelos autores}
+    \end{figure}
 
-\subsubsection{Serviços}
+        \subsubsection{Deploy}
 
-Nesta área o engenheiro pode conferir o status dos serviços implantados no Devspace atual e também interagir com cada um deles de forma independente. É possível a obtenção em tempo real dos \textit{logs} (tudo que for direcionado ao \textit{stdout} e \textit{stderr} do processo), a reinicialização do processo e também a sua remoção do Devspace através de botões. A lista também apresenta as interfaces de cada processo expostas para a \textit{internet} para permitir outros tipos de interação, como por exemplo a interface de um possível servidor HTTP do serviço e a interface HTTP do Stinger, que é um gerenciador de processos oferecido pelo Formicarium e que está presente nos serviços implantados no Devspace.
+            Esta área conta com um formulário para implantação de um novo serviço. É possível inserir o nome, escolher se o serviço é do tipo \textit{Syncable} (o que fará com que a imagem Docker \textit{Chamber} seja usada). Caso esta opção esteja selecionada, o engenheiro deve apontar o diretório local em que está o código fonte do serviço para que este seja enviado para o contêiner remoto e possa ser sincronizado em seguida.
 
-\begin{figure}[htb]
-	\caption{\label{fig_frontend_devspace_services}Tela Serviços do Devspace}
-	\begin{center}
-	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-devspace-services.png}
-	\end{center}
-	\legend{Fonte: os autores - 2018-11-10}
-\end{figure}
+% \begin{figure}[htb]
+% 	\caption{\label{fig_frontnd_deploy}Tela Deploy de serviços}
+% 	\begin{center}
+% 	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-deploy.png}
+% 	\end{center}
+% 	\legend{Fonte: Elaborado pelos autores}
+% \end{figure}
 
-\begin{figure}[htb]
-	\caption{\label{fig_frontend_logs}Tela Logs de um serviço}
-	\begin{center}
-	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-logs.png}
-	\end{center}
-	\legend{Fonte: Elaborado pelos autores}
-\end{figure}
+        \subsubsection{Distributed Debugger}
+            Nesta interface gráfica, o engenheiro consegue visualizar as interações entre os serviços em seu devspace (ou seja, as trocas de mensagens HTTP e Kafka) através de um grafo. Este grafo é construído por um algoritmo que, através da lista de mensagens coletadas em um período pelo \textit{Hive}, determina seus nós e arestas.
+            
+            Os nós serão sempre os serviços envolvidos nas trocas de mensagens, enquanto que as arestas representam as interações entre estes serviços. Estas interações podem ser de diversos tipos, porém na implementação atual apenas mensagens HTTP e Kafka são corretamente interpretadas pelo sistema.
+            
+            Esta área conta também com uma visualização em forma de árvore, agrupando as mensagens hierarquicamente utilizando seu \textit{span id}. Este tipo de visualização ajuda a acompanhar os eventos em função de sua "profundidade". A profundidade de um evento é determinada pelo número de eventos que tiveram de ocorrer para que este fosse finalmente desencadeado.
+            É possível aplicar filtros na lista de eventos para que apenas os de interesse sejam usados na geração das visualizações. Por exemplo, é possível filtrar por eventos provenientes apenas de determinados serviços ou por tipos de eventos específicos.
+            
+            O grafo é interativo para o usuário, ou seja, é possível movimentar com o cursor os nós e arestas para rearranjá-lo, de modo a facilitar a visualização de uma determinada região de interesse. Ao realizar um clique em uma aresta, uma nova tela com detalhes daquela interação é exibida onde o engenheiro pode obter informações completas da interação, como \textit{timestamps}, corpo e cabeçário da mensagem, remetente e destinatário, códigos de resposta, etc.
 
-\subsubsection{Deploy}
+        \subsubsection{Sync}
+            Nesta tela é possível visualizar os serviços que estão em modo de sincronização habilitado e acompanhar quais arquivos foram de fato sincronizados e o estado dessa operação (carregando, sucesso ou erro).
 
-Esta área conta com um formulário para implantação de um novo serviço. É possível inserir o nome, escolher se o serviço é do tipo \textit{Syncable} (o que fará com que a imagem Docker \textit{Chamber} seja usada). Caso esta opção esteja selecionada, o engenheiro deve apontar o diretório local em que está o código fonte do serviço para que este seja enviado para o contêiner remota e possa ser sincronizado em seguida.
 
-\begin{figure}[htb]
-	\caption{\label{fig_frontnd_deploy}Tela Deploy de serviços}
-	\begin{center}
-	\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-deploy.png}
-	\end{center}
-	\legend{Fonte: Elaborado pelos autores}
-\end{figure}
 
-\subsubsection{Distributed Debugger}
-
-\subsubsection{Sync}
-
-\subsubsection{Configurações}
-
-\begin{figure}[htb]
-		\caption{\label{fig_frontend_sync}Tela Sincronização de arquivos em um serviço}
-		\begin{center}
-		\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-sync.png}
-		\end{center}
-		\legend{Fonte: Elaborado pelos autores}
-	\end{figure}
+            \begin{figure}[htb]
+        		\caption{\label{fig_frontend_sync}Tela Sincronização de arquivos em um serviço}
+        		\begin{center}
+        		\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-sync.png}
+        		\end{center}
+        		\legend{Fonte: Elaborado pelos autores}
+        	\end{figure}
 	
-\begin{figure}[htb]
+    \begin{figure}[htb]
 		\caption{\label{fig_frontend_tracing_details}Tela Detalhes de uma requisição}
 		\begin{center}
 		\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-tracing-details.png}
@@ -351,7 +356,7 @@ Esta área conta com um formulário para implantação de um novo serviço. É p
 		\legend{Fonte: Elaborado pelos autores}
 	\end{figure}
 	
-\begin{figure}[htb]
+    \begin{figure}[htb]
 		\caption{\label{fig_frontend_tracing}Tela Grafo de interações em Tracing}
 		\begin{center}
 		\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-tracing.png}
@@ -359,10 +364,10 @@ Esta área conta com um formulário para implantação de um novo serviço. É p
 		\legend{Fonte: Elaborado pelos autores}
 	\end{figure}
 
-\begin{figure}[htb]
-		\caption{\label{fig_frontend_create_devspace}Tela Criar novo Devspace}
-		\begin{center}
-		\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-create-devspace.png}
-		\end{center}
-		\legend{Fonte: Elaborado pelos autores}
-	\end{figure}
+% \begin{figure}[htb]
+% 		\caption{\label{fig_frontend_create_devspace}Tela Criar novo Devspace}
+% 		\begin{center}
+% 		\includegraphics[width=\textwidth,keepaspectratio]{pictures/frontend/frontend-create-devspace.png}
+% 		\end{center}
+% 		\legend{Fonte: Elaborado pelos autores}
+% 	\end{figure}
