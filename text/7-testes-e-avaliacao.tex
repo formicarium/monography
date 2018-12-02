@@ -1,4 +1,31 @@
-\chapter{Testes e Avaliação}
-    \subsection{Demonstrações e \textit{feedbacks}} %% TODO: Leal
-    \subsection{Implantação em um \textit{squad}} %% TODO: Leal
-    \subsection{Simulações de casos reais} %% TODO: Luiz
+\chapter{Testes e Avaliação}\
+    \section{Testes Unitários}
+        Testes unitários foram feitos para por à prova pedaços específicos do código fonte de cada sistema. São muito úteis para evidenciar erros, e no caso do nosso projeto, foram feitos em escopo de função (quando a mesma apresentasse algum tipo de lógica não-trivial, como transformação de dados, criação de \textit{Devspaces}, etc). Os mesmos eram executados em tempo de desenvolvimento, e também foram feitos passos de teste no nosso ambiente de \textit{CI/CD}, permitindo que os artefatos com versões novas dos serviços e bibliotecas só pudessem ser gerados caso todos os testes unitários estivessem passando.
+    
+    \section{Testes Integrados}
+        Testes Integrados foram feitos para por à prova um conjunto de módulos de cada \textit{microsserviço}, que no nosso caso corresponde aos módulos de banco de dados, camada \textit{web}, camada de lógica de negócio, módulo de mensageria \textit{Kafka}, dentre outras. 
+        
+        O teste integrado correspondeu a subir os módulos referidos, com algumas configurações simplificadas (por exemplo, banco de dados local, \textit{Kafka} \textit{mockado}, etc) e desenvolver asserções.
+        
+        Fizemos testes integrados no \textit{Soil} para estressar toda a manipulação de \textit{Devspaces}, simulando requisições da \textit{CLI} ou \textit{UI}, como por exemplo, um disparo no \textit{endpoint} de criar ou deletar \textit{Devspace}. 
+        
+        Fizemos testes integrados para o \textit{config-server} do \textit{Nubank} também, mais focados nas respostas de variáveis de ambiente e como fonte de documentação para nós mesmos adaptarmos o código do \textit{Soil} para lidar corretamente com a criação de \textit{Devspace} a partir da resposta do mesmo.
+        
+        No \textit{Hive}, testes de integração foram feitos para estressar todo o fluxo de eventos, desde receber um evento até servir o mesmo de resposta para a \textit{UI}.
+    
+    \section{Teste entre os integrantes}
+        Este foi um caso simples de teste de teste de aceitação de usuário, onde os usuários eram 3 dos 4 integrantes do grupo. Foi uma experiência feita por um dos integrantes, sem avisar os outros três de que a usabilidade do \textit{Formicarium} estava sendo testada.
+        
+        Enquanto refatorávamos as bibliotecas de cliente usadas em um serviço do \textit{Nubank}, um dos integrantes fez uma alteração de código em um dos componentes do microsserviço, introduzindo um \textit{bug} que causava uma \textit{NullPointerException}, possível de ser evidenciada apenas em tempo de execução. Mais especificamente, o código responsável por enviar as mensagens via \textit{ZeroMQ} transforma os mapas de evento de \textit{clojure} para uma \textit{string} \textit{JSON}. A alteração foi feita para causar essa transformação falhar, e tentarmos enviar um nulo para o \textit{Hive}, causando a exceção referida. Tal cenário é impossível de ser reproduzido em testes unitários pois para os mesmos, os \textit{sockets} de \textit{ZeroMQ} são \textit{Mockados}.
+        
+        Com essa modificação feita, o integrante pediu ajuda do resto da equipe para resolver o problema, e a equipe foi modificando iterativamente cada parte do código para tentar encontrar o problema (a saber, colocando \textit{logs} e verificando requisições no contêiner), usando o \textit{file watch} do \textit{Formicarium}, até descobrir e resolver o problema, em cerca de 30 minutos. Ao final da experiência, o integrante responsável por introduzir o \textit{bug} comentou do experimento, e a equipe concluiu que a infraestrutura do \textit{Formicarium} facilitou o processo.
+        
+        Esse foi um exemplo de teste sem maiores planejamentos, porém foi uma experiência que nos permitiu por à prova se o \textit{Formicarium} de fato teria alguma utilidade prática, caso conseguisse lidar com um dos casos de erro mais comuns evidenciados no desenvolvimento de microsserviços.
+    
+    \section{Teste com um engenheiro do \textit{Nubank}}
+        Na segunda semana de outubro, pedimos para um engenheiro do \textit{Nubank} experimentar o nosso \textit{Software}, como testador \textit{alfa}. Fizemos o \textit{setup} da máquina e nos prontificamos para lidar com quaisquer dúvidas. Ao longo de um dia de uso, o engenheiro sofreu com alguns problemas da rede local, mas conseguiu executar todas as funcionalidades do \textit{Formicarium}.
+    
+    \section{Implantação em um \textit{squad}}
+        Em seguida, tentamos implementar o produto em uma equipe no \textit{Nubank}, onde apresentamos o produto em uma reunião e pedimos para teste dos integrantes, caso desejassem. 
+        
+        O produto não teve muito uso, fora os dois primeiros dias. Conversando com os integrantes para entender o motivo, identificamos que a infraestrutura e \textit{API}'s são úteis, porém fazer todo o \textit{setup} de estado inicial é muito custoso, e os engenheiros nem sempre sabem quais são os serviços envolvidos em um fluxo de negócio que desejavam aprender utilizando o \textit{Formicarium}.
